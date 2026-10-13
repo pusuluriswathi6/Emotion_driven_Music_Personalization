@@ -1,0 +1,157 @@
+{% extends 'user/userbase.html' %}
+{% load static %}
+
+{% block contents %}
+<section id="dashboard" class="py-5">
+  <div class="container" data-aos="fade-up">
+    <div class="section-title text-center mb-5">
+      <h2>Emotion Detection Dashboard</h2>
+      <p>Upload an image or start live camera detection, then listen to music matched to your emotion.</p>
+    </div>
+
+    <div class="row mb-4">
+      <div class="col-lg-12">
+        <div class="d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between gap-3">
+          <div>
+            <h3 class="mb-1">Welcome back{% if user_name %}, {{ user_name }}{% endif %}!</h3>
+            <p class="text-muted mb-0">Here is your recent emotion history and music controls.</p>
+          </div>
+          <div class="d-flex flex-wrap gap-3">
+            <div class="card shadow-sm border-0 p-3">
+              <h6 class="mb-1">Total Detections</h6>
+              <p class="mb-0 fs-4 fw-bold">{{ total_predictions|default:0 }}</p>
+            </div>
+            <div class="card shadow-sm border-0 p-3">
+              <h6 class="mb-1">Active Emotions</h6>
+              <p class="mb-0 fs-4 fw-bold">{{ emotion_stats|length|default:0 }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row g-4 mb-5">
+      <div class="col-lg-4">
+        <div class="card dashboard-card shadow-sm border-0 h-100">
+          <div class="card-body">
+            <div class="d-flex align-items-center mb-3 gap-3">
+              <span class="icon bg-primary text-white rounded-circle p-3"><i class="bi bi-image-fill fs-4"></i></span>
+              <div>
+                <h5 class="mb-1">Upload Image</h5>
+                <p class="mb-0 text-muted">Detect emotion from an image and play matching music.</p>
+              </div>
+            </div>
+            <form action="{% url 'UploadImageAction' %}" enctype="multipart/form-data" method="post">
+              {% csrf_token %}
+              <div class="mb-3">
+                <input class="form-control" type="file" name="file" accept="image/gif, image/jpeg, image/png" required>
+              </div>
+              <button type="submit" class="btn btn-primary rounded-pill w-100">Upload Image</button>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-4">
+        <div class="card dashboard-card shadow-sm border-0 h-100">
+          <div class="card-body">
+            <div class="d-flex align-items-center mb-3 gap-3">
+              <span class="icon bg-success text-white rounded-circle p-3"><i class="bi bi-camera-reels-fill fs-4"></i></span>
+              <div>
+                <h5 class="mb-1">Live Camera</h5>
+                <p class="mb-0 text-muted">Run real-time emotion detection and stop the stream with Q.</p>
+              </div>
+            </div>
+            <form action="{% url 'UserLiveCameDetect' %}" method="post">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-success rounded-pill w-100">Start Live Detect</button>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-4">
+        <div class="card dashboard-card shadow-sm border-0 h-100">
+          <div class="card-body">
+            <div class="d-flex align-items-center mb-3 gap-3">
+              <span class="icon bg-info text-white rounded-circle p-3"><i class="bi bi-music-note-list fs-4"></i></span>
+              <div>
+                <h5 class="mb-1">Music Control</h5>
+                <p class="mb-0 text-muted">Stop mood music instantly after detection.</p>
+              </div>
+            </div>
+            <form action="{% url 'stop_music' %}" method="post">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-info rounded-pill w-100 text-white">Stop Music</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row mb-4">
+      <div class="col-lg-12">
+        <div class="card shadow-sm border-0">
+          <div class="card-body">
+            <h4 class="card-title mb-4">Emotion Summary</h4>
+            <div class="row g-3">
+              {% if emotion_stats %}
+                {% for emotion, count in emotion_stats.items %}
+                  <div class="col-md-4">
+                    <div class="p-3 rounded-4 bg-light">
+                      <h5 class="mb-2">{{ emotion }}</h5>
+                      <p class="mb-0 fs-4 fw-bold">{{ count }}</p>
+                    </div>
+                  </div>
+                {% endfor %}
+              {% else %}
+                <div class="col-12">
+                  <div class="p-4 rounded-4 bg-light text-center text-muted">No emotion history available yet.</div>
+                </div>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-12">
+        <div class="card shadow-sm border-0">
+          <div class="card-body">
+            <h4 class="card-title mb-4">Recent Predictions</h4>
+            <div class="table-responsive">
+              <table class="table table-hover align-middle">
+                <thead class="table-light">
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Emotion</th>
+                    <th scope="col">Image</th>
+                    <th scope="col">Date</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for user in data %}
+                    <tr>
+                      <th scope="row">{{ forloop.counter }}</th>
+                      <td>{{ user.emotion }}</td>
+                      <td>
+                        <a href="{{ user.file.url }}" class="btn btn-outline-primary btn-sm rounded-pill">View</a>
+                      </td>
+                      <td>{{ user.created_at|date:"M d, Y H:i" }}</td>
+                    </tr>
+                  {% empty %}
+                    <tr>
+                      <td colspan="4" class="text-center text-muted py-4">No predictions yet.</td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

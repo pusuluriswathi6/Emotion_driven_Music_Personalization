@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block contents %}
+<section id="hero" class="hero d-flex align-items-center">
+  <div class="hero-overlay"></div>
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-lg-6" data-aos="fade-up" data-aos-delay="200">
+        <h1>Detect Emotion, Play the Perfect Music</h1>
+        <p class="text-white-75">Upload a photo or use your live camera stream to identify mood and automatically play music matched to your emotion.</p>
+        <div class="mt-4">
+          <a href="{% url 'authpage' %}" class="btn btn-primary btn-lg rounded-pill me-3">Get Started</a>
+          <a href="#features" class="btn btn-outline-light btn-lg rounded-pill">See Features</a>
+        </div>
+      </div>
+      <div class="col-lg-6 text-center" data-aos="zoom-in" data-aos-delay="300">
+        <img src="{% static 'img/hero-img.png' %}" class="img-fluid hero-graphic" alt="Emotion detection illustration">
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="features" class="features py-5">
+  <div class="container" data-aos="fade-up">
+    <div class="section-title text-center mb-5">
+      <h2>Features</h2>
+      <p>Emotion detection, live camera analysis, and mood-based music recommendations in one easy experience.</p>
+    </div>
+
+    <div class="row gy-4">
+      <div class="col-lg-4" data-aos="fade-up" data-aos-delay="100">
+        <div class="icon-box shadow-sm rounded-4 p-4 h-100">
+          <div class="icon bg-primary text-white rounded-circle mb-3"><i class="bi bi-camera-fill"></i></div>
+          <h4>Image Emotion Detection</h4>
+          <p>Upload a picture to detect emotion using AI and get an instant mood music match.</p>
+        </div>
+      </div>
+      <div class="col-lg-4" data-aos="fade-up" data-aos-delay="200">
+        <div class="icon-box shadow-sm rounded-4 p-4 h-100">
+          <div class="icon bg-success text-white rounded-circle mb-3"><i class="bi bi-camera-reels-fill"></i></div>
+          <h4>Live Camera Analysis</h4>
+          <p>Use live camera mode to analyze emotion in real time and capture the dominant mood.</p>
+        </div>
+      </div>
+      <div class="col-lg-4" data-aos="fade-up" data-aos-delay="300">
+        <div class="icon-box shadow-sm rounded-4 p-4 h-100">
+          <div class="icon bg-info text-white rounded-circle mb-3"><i class="bi bi-music-note-list"></i></div>
+          <h4>Mood-Based Music</h4>
+          <p>Automatically play music that matches your current emotion for a more immersive experience.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block contents %}
+<section id="contact" class="contact py-5">
+  <div class="container" data-aos="fade-up">
+    <div class="section-title text-center mb-5">
+      <h2>Login or Register</h2>
+      <p>Sign in to access emotion detection, live camera analysis, and mood-based music.</p>
+    </div>
+
+    {% if messages %}
+      <div class="row justify-content-center mb-4">
+        <div class="col-lg-8">
+          {% for message in messages %}
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+              {{ message }}
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    {% endif %}
+
+    <div class="row gx-4 gy-4 justify-content-center">
+      <div class="col-lg-5">
+        <div class="card shadow-sm border-0 rounded-4 p-4">
+          <div class="card-body">
+            <h3 class="card-title mb-4">Already Registered</h3>
+            <form action="{% url 'commonlogin' %}" method="post" role="form">
+              {% csrf_token %}
+              <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="text" class="form-control" name="email" id="email" placeholder="Enter your email" required>
+              </div>
+              <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" class="form-control" name="password" id="password" placeholder="Enter password" required>
+              </div>
+              <div class="d-grid">
+                <button type="submit" class="btn btn-primary rounded-pill">Login</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-5">
+        <div class="card shadow-sm border-0 rounded-4 p-4">
+          <div class="card-body">
+            <h3 class="card-title mb-4">New User</h3>
+            <form action="{% url 'Userregister' %}" method="post" role="form">
+              {% csrf_token %}
+              <div class="mb-3">
+                <label for="username" class="form-label">Username</label>
+                <input type="text" name="username" class="form-control" id="username" placeholder="Your name" required>
+              </div>
+              <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control" name="email" id="email" placeholder="name@example.com" required>
+              </div>
+              <div class="mb-3">
+                <label for="contact" class="form-label">Contact Number</label>
+                <input type="text" class="form-control" name="contact" id="contact" placeholder="Phone number" required>
+              </div>
+              <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" class="form-control" name="password" id="password" placeholder="Create password" required>
+              </div>
+              <div class="d-grid">
+                <button type="submit" class="btn btn-secondary rounded-pill">Register</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
